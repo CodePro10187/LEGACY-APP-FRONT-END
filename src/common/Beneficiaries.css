@@ -1,0 +1,202 @@
+/* General font and base style */
+a {
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+}
+
+/* Main container */
+.beneficiaries-container {
+  padding: 1rem;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center all elements horizontally */
+}
+
+/* Input field styles */
+input[type="text"] {
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 100%;
+  font-size: 16px;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #80b0fd;
+}
+
+/* Add beneficiary button */
+button {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #80b0fd;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  color: black;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.25px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #6fa4fc;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Table styles */
+table {
+  width: 100%;
+  margin-top: 1rem;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #101f46;
+  color: white;
+  font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Column widths for the table */
+th,
+td {
+  min-width: 120px;
+}
+
+/* Layout for the form inputs */
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  max-width: 600px;
+  width: 100%;
+  justify-items: center; /* Horizontally center input fields in the grid cells */
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input-group input {
+  width: 100%; /* Ensures the input fills the available width */
+  max-width: 250px; /* Optional: restricts max width of the inputs */
+}
+
+/* Button styles for table actions (like add, edit, etc.) */
+.button-sky-blue {
+  background-color: #80b0fd;
+  color: black;
+  border-radius: 24px;
+  padding: 10px 24px;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-sky-blue:hover {
+  background-color: #6fa4fc;
+}
+
+.button-sky-blue:active {
+  background-color: #4d90fe;
+}
+
+.button-sky-blue:focus {
+  outline: none;
+}
+
+/* Button styles for dark actions (like remove, delete, etc.) */
+.button-dark {
+  background-color: #272727;
+  color: white;
+  border-radius: 24px;
+  padding: 10px 24px;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-dark:hover {
+  background-color: #2e2c2c;
+}
+
+.button-dark:active {
+  background-color: #1e1e1e;
+}
+
+.button-dark:focus {
+  outline: none;
+}
+
+/* Styling for header (if you want to use it in the future) */
+.header {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #101f46;
+  color: white;
+}
+
+.logo {
+  margin-right: auto;
+  margin-left: 10px;
+  font-size: 1.5rem;
+  font-weight: bolder;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+}
+
+.nav a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: white;
+}
+
+.nav a:hover {
+  text-decoration: underline;
+}
+
+/* Auth button styles */
+.auth-buttons button {
+  margin-left: 10px;
+}
+
+.auth-buttons {
+  display: flex;
+  align-items: center;
+}

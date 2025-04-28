@@ -1,0 +1,113 @@
+/* Base reset and layout */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  background-color: #f2f2f2;
+}
+
+/* Main container */
+.user-register-container {
+  background-color: #ffffff;
+  max-width: 700px;
+  margin: 60px auto;
+  padding: 40px 32px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+/* Heading */
+.user-register-heading {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #202124;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* Form layout */
+.user-register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Grid for input fields */
+.user-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Full-width override for wider fields */
+.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Input wrapper */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Input fields */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="date"],
+.form-group input[type="file"] {
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  border: 2px solid #1a73e8;
+  outline: none;
+}
+
+/* Submit button */
+.user-register-form button {
+  margin-top: 16px;
+  background-color: #1a73e8;
+  color: #ffffff;
+  padding: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: background-color 0.3s ease;
+}
+
+.user-register-form button:hover {
+  background-color: #1669c1;
+}
+
+/* Error message */
+.error-message {
+  color: #d93025;
+  background-color: #fce8e6;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+  text-align: left;
+}
+
+/* File input custom label (optional enhancement) */
+/* Optional: Add this if you want to make the file input prettier */
+/*
+  .form-group input[type="file"] {
+    padding: 6px;
+    background-color: #f8f9fa;
+    border: 1px dashed #ccc;
+    cursor: pointer;
+  }
+  */
