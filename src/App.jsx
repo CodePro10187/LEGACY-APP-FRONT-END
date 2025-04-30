@@ -7,6 +7,7 @@ import ConfirmationPage from "./components/ConfirmationPage";
 import LawyerRegister from "./components/LawyerRegister";
 import RegisterSelection from "./components/RegisterSelection";
 import LegalDocuments from "./components/LegalDocuments";
+import SubscriptionPlan from "./components/SubscriptionPlan";
 
 import DigitalAssets from "./components/DigitalAssets";
 import Home from "./components/Home";
@@ -36,6 +37,9 @@ function App() {
         <Link to="/LegalDocuments" style={{ marginRight: 10 }}>
           LegalDocuments
         </Link>
+        <Link to="/SubscriptionPlan" style={{ marginRight: 10 }}>
+          SubscriptionPlan
+        </Link>
 
         <Link to="/DigitalAssets" style={{ marginRight: 10 }}>
           DigitalAssets
@@ -50,6 +54,7 @@ function App() {
         <Route path="/LawyerRegister" element={<LawyerRegister />} />
         <Route path="/RegisterSelection" element={<RegisterSelection />} />
         <Route path="/LegalDocuments" element={<LegalDocuments />} />
+        <Route path="/SubscriptionPlan" element={<SubscriptionPlan />} />
 
         <Route path="/DigitalAssets" element={<DigitalAssets />} />
         <Route path="/Home" element={<Home />} />
