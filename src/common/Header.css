@@ -196,3 +196,16 @@ a {
   box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
     rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
 }
+
+.profile-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
