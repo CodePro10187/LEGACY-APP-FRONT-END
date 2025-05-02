@@ -57,7 +57,7 @@ a {
 }
 
 /* Sky Blue Button */
-.button-sky-blue {
+.button-signup {
   align-items: center;
   appearance: none;
   background-color: #80b0fd;
@@ -89,48 +89,48 @@ a {
   z-index: 0;
 }
 
-.button-sky-blue:hover {
+.button-signup:hover {
   background-color: #6fa4fc;
   color: black;
 }
 
-.button-sky-blue:active {
+.button-signup:active {
   box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%),
     0 8px 12px 6px rgb(60 64 67 / 15%);
   outline: none;
 }
 
-.button-sky-blue:focus {
+.button-signup:focus {
   outline: none;
 }
 
-.button-sky-blue:not(:disabled) {
+.button-signup:not(:disabled) {
   box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
     rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
 }
 
-.button-sky-blue:not(:disabled):hover {
+.button-signup:not(:disabled):hover {
   box-shadow: rgba(60, 64, 67, 0.3) 0 2px 3px 0,
     rgba(60, 64, 67, 0.15) 0 6px 10px 4px;
 }
 
-.button-sky-blue:not(:disabled):focus {
+.button-signup:not(:disabled):focus {
   box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
     rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
 }
 
-.button-sky-blue:not(:disabled):active {
+.button-signup:not(:disabled):active {
   box-shadow: rgba(60, 64, 67, 0.3) 0 4px 4px 0,
     rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
 }
 
-.button-sky-blue:disabled {
+.button-signup:disabled {
   box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
     rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
 }
 
 /* Dark Button (optimized to match sky-blue structure) */
-.button-dark {
+.button-login {
   align-items: center;
   appearance: none;
   background-color: #272727;
@@ -160,39 +160,39 @@ a {
   z-index: 0;
 }
 
-.button-dark:hover {
+.button-login:hover {
   background-color: #2e2c2c;
 }
 
-.button-dark:active {
+.button-login:active {
   box-shadow: 0 4px 4px 0 rgb(0 0 0 / 30%), 0 8px 12px 6px rgb(0 0 0 / 15%);
 }
 
-.button-dark:focus {
+.button-login:focus {
   outline: none;
 }
 
-.button-dark:not(:disabled) {
+.button-login:not(:disabled) {
   box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
     rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
 }
 
-.button-dark:not(:disabled):hover {
+.button-login:not(:disabled):hover {
   box-shadow: rgba(60, 64, 67, 0.3) 0 2px 3px 0,
     rgba(60, 64, 67, 0.15) 0 6px 10px 4px;
 }
 
-.button-dark:not(:disabled):focus {
+.button-login:not(:disabled):focus {
   box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
     rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
 }
 
-.button-dark:not(:disabled):active {
+.button-login:not(:disabled):active {
   box-shadow: rgba(60, 64, 67, 0.3) 0 4px 4px 0,
     rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
 }
 
-.button-dark:disabled {
+.button-login:disabled {
   box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
     rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
 }

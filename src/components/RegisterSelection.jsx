@@ -10,10 +10,10 @@ const RegisterSelection = () => {
     <div className="register-selection-container">
       <h2 className="register-selection-heading">Choose Registration Type</h2>
       <div className="register-buttons">
-        <button onClick={() => navigate("/user-register")}>
+        <button onClick={() => navigate("/UserRegister")}>
           Register as User
         </button>
-        <button onClick={() => navigate("/lawyer-register")}>
+        <button onClick={() => navigate("/LawyerRegister")}>
           Register as Lawyer
         </button>
       </div>

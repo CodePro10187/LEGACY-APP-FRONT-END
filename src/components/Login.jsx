@@ -22,7 +22,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <h2 className="login-heading">Sign In</h2>
+      <h2 className="login-heading">Login</h2>
       {error && <p className="error-message">{error}</p>}
 
       <form className="login-form" onSubmit={handleSubmit}>
@@ -51,18 +51,21 @@ const Login = () => {
         </div>
 
         <button type="submit" className="login-button">
-          Sign In
+          Login
         </button>
       </form>
 
       <div className="extra-links">
         <button
-          onClick={() => navigate("/forgot-password")}
+          onClick={() => navigate("/ForgotPassword")}
           className="link-button"
         >
           Forgot password?
         </button>
-        <button onClick={() => navigate("/register")} className="link-button">
+        <button
+          onClick={() => navigate("/RegisterSelection")}
+          className="link-button"
+        >
           Don't have an account? Sign up
         </button>
       </div>

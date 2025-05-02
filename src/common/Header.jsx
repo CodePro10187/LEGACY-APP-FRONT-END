@@ -1,9 +1,11 @@
 import React from "react";
 import "./Header.css";
 import { useAuth } from "../context/AuthContext"; // Make sure path matches
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 export default function Header() {
   const { user, loading } = useAuth();
+  const navigate = useNavigate(); // Hook for programmatic navigation
 
   return (
     <header className="header">
@@ -13,6 +15,8 @@ export default function Header() {
         <a href="/">Home</a>
         <a href="/contact">Contact</a>
         <a href="/about">About Us</a>
+        <a href="/LegalDocuments">Legal Documents</a>
+        <a href="/HelpFAQ">Help</a>
       </nav>
 
       <div className="auth-buttons">
@@ -29,15 +33,12 @@ export default function Header() {
           </div>
         ) : (
           <>
-            <button
-              className="button-dark"
-              onClick={() => alert("Login Clicked")}
-            >
+            <button className="button-login" onClick={() => navigate("/Login")}>
               Login
             </button>
             <button
-              className="button-sky-blue"
-              onClick={() => alert("Sign Up Clicked")}
+              className="button-signup"
+              onClick={() => navigate("/RegisterSelection")}
             >
               Sign Up
             </button>

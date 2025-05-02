@@ -1,13 +1,14 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from "./components/Login";
-import Register from "./components/Register";
 import UserRegister from "./components/UserRegister";
 import ConfirmationPage from "./components/ConfirmationPage";
 import LawyerRegister from "./components/LawyerRegister";
 import RegisterSelection from "./components/RegisterSelection";
 import LegalDocuments from "./components/LegalDocuments";
 import SubscriptionPlan from "./components/SubscriptionPlan";
+import ForgotPassword from "./components/ForgotPassword";
+import HelpFAQ from "./components/HelpFAQ";
 
 import DigitalAssets from "./components/DigitalAssets";
 import Home from "./components/Home";
@@ -18,9 +19,6 @@ function App() {
       <nav style={{ margin: 10 }}>
         <Link to="/Login" style={{ marginRight: 10 }}>
           Login
-        </Link>
-        <Link to="/Register" style={{ marginRight: 10 }}>
-          Register
         </Link>
         <Link to="/UserRegister" style={{ marginRight: 10 }}>
           UserRegister
@@ -40,24 +38,31 @@ function App() {
         <Link to="/SubscriptionPlan" style={{ marginRight: 10 }}>
           SubscriptionPlan
         </Link>
+        <Link to="/ForgotPassword" style={{ marginRight: 10 }}>
+          ForgotPassword
+        </Link>
+        <Link to="/HelpFAQ" style={{ marginRight: 10 }}>
+          HelpFAQ
+        </Link>
 
         <Link to="/DigitalAssets" style={{ marginRight: 10 }}>
           DigitalAssets
         </Link>
-        <Link to="/Home">Home</Link>
+        <Link to="/">Home</Link>
       </nav>
       <Routes>
         <Route path="/Login" element={<Login />} />
-        <Route path="/Register" element={<Register />} />
         <Route path="/UserRegister" element={<UserRegister />} />
         <Route path="/ConfirmationPage" element={<ConfirmationPage />} />
         <Route path="/LawyerRegister" element={<LawyerRegister />} />
         <Route path="/RegisterSelection" element={<RegisterSelection />} />
         <Route path="/LegalDocuments" element={<LegalDocuments />} />
         <Route path="/SubscriptionPlan" element={<SubscriptionPlan />} />
+        <Route path="/ForgotPassword" element={<ForgotPassword />} />
+        <Route path="/HelpFAQ" element={<HelpFAQ />} />
 
         <Route path="/DigitalAssets" element={<DigitalAssets />} />
-        <Route path="/Home" element={<Home />} />
+        <Route path="/" element={<Home />} />
       </Routes>
     </Router>
   );
