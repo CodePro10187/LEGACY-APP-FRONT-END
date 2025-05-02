@@ -9,6 +9,7 @@ import LegalDocuments from "./components/LegalDocuments";
 import SubscriptionPlan from "./components/SubscriptionPlan";
 import ForgotPassword from "./components/ForgotPassword";
 import HelpFAQ from "./components/HelpFAQ";
+import ContactLawyer from "./components/ContactLawyer";
 
 import DigitalAssets from "./components/DigitalAssets";
 import Home from "./components/Home";
@@ -44,6 +45,9 @@ function App() {
         <Link to="/HelpFAQ" style={{ marginRight: 10 }}>
           HelpFAQ
         </Link>
+        <Link to="/ContactLawyer" style={{ marginRight: 10 }}>
+          ContactLawyer
+        </Link>
 
         <Link to="/DigitalAssets" style={{ marginRight: 10 }}>
           DigitalAssets
@@ -60,6 +64,7 @@ function App() {
         <Route path="/SubscriptionPlan" element={<SubscriptionPlan />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/HelpFAQ" element={<HelpFAQ />} />
+        <Route path="/ContactLawyer" element={<ContactLawyer />} />
 
         <Route path="/DigitalAssets" element={<DigitalAssets />} />
         <Route path="/" element={<Home />} />

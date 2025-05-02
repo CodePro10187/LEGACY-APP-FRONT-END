@@ -1,0 +1,30 @@
+.contact-lawyer-container {
+  padding: 20px;
+}
+
+.lawyer-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.lawyer-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  width: 300px;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.profile-pic {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.chat-box {
+  margin-top: 10px;
+  background: #eef;
+  padding: 10px;
+}

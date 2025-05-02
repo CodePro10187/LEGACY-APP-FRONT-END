@@ -36,6 +36,7 @@ const UserRegister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Submitting user form...", formData); // ✅ add this
 
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match!");
@@ -52,11 +53,15 @@ const UserRegister = () => {
       });
 
       if (response.ok) {
+        console.log("Registration successful");
         navigate("/confirm");
       } else {
+        const text = await response.text();
+        console.error("Server error:", text);
         setError("Registration failed. Please try again.");
       }
     } catch (error) {
+      console.error("Fetch error:", error); // ✅ catch network failures
       setError("Error connecting to server.");
     }
   };

@@ -16,6 +16,7 @@ export default function Header() {
         <a href="/contact">Contact</a>
         <a href="/about">About Us</a>
         <a href="/LegalDocuments">Legal Documents</a>
+        <a href="/ContactLawyer">Contact Lawyer</a>
         <a href="/HelpFAQ">Help</a>
       </nav>
 
