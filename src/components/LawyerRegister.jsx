@@ -1,10 +1,7 @@
-// src/components/LawyerRegister.jsx
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./UserRegister.css";
 
 const LawyerRegister = () => {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -29,6 +26,7 @@ const LawyerRegister = () => {
 
   const [documentFile, setDocumentFile] = useState(null);
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -44,40 +42,69 @@ const LawyerRegister = () => {
 
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match!");
+      setSuccessMessage(null);
       return;
     }
 
-    const data = new FormData();
-    for (const key in formData) {
-      data.append(key, formData[key]);
+    const formPayload = new FormData();
+    for (let key in formData) {
+      formPayload.append(key, formData[key]);
     }
     if (documentFile) {
-      data.append("document", documentFile);
+      formPayload.append("documentFile", documentFile);
     }
 
     try {
       const response = await fetch(
-        "http://localhost:8080/api/lawyer-register",
+        "http://localhost:8080/api/lawyers/register",
         {
           method: "POST",
-          body: data,
+          body: formPayload,
         }
       );
 
       if (response.ok) {
-        navigate("/confirm");
+        setSuccessMessage("Registration successful!");
+        setError(null);
+        setFormData({
+          firstName: "",
+          lastName: "",
+          prefix: "",
+          email: "",
+          mobileNumber: "",
+          dateOfBirth: "",
+          country: "",
+          address1: "",
+          address2: "",
+          nicPassportNumber: "",
+          postalCode: "",
+          securityQuestion: "",
+          answer: "",
+          password: "",
+          confirmPassword: "",
+          lawFirmName: "",
+          lawFirmAddress: "",
+          professionalLicenseNumber: "",
+          licenseExpiryDate: "",
+        });
+        setDocumentFile(null);
       } else {
-        setError("Registration failed. Please try again.");
+        const errText = await response.text();
+        setError(errText || "Registration failed.");
+        setSuccessMessage(null);
       }
-    } catch (error) {
-      setError("Error connecting to server.");
+    } catch (err) {
+      setError("Network error. Please try again.");
+      setSuccessMessage(null);
     }
   };
 
   return (
     <div className="user-register-container">
       <h2 className="user-register-heading">Lawyer Registration</h2>
+
       {error && <p className="error-message">{error}</p>}
+      {successMessage && <p className="success-message">{successMessage}</p>}
 
       <form
         className="user-register-form"
@@ -136,7 +163,6 @@ const LawyerRegister = () => {
             </div>
           ))}
 
-          {/* File upload field */}
           <div className="form-group full-width">
             <label htmlFor="document">Upload Proof Document</label>
             <input

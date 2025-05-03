@@ -1,10 +1,8 @@
 // src/components/UserRegister.jsx
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./UserRegister.css";
 
 const UserRegister = () => {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -25,6 +23,7 @@ const UserRegister = () => {
   });
 
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -34,17 +33,38 @@ const UserRegister = () => {
     });
   };
 
+  const resetForm = () => {
+    setFormData({
+      firstName: "",
+      lastName: "",
+      prefix: "",
+      email: "",
+      mobileNumber: "",
+      dateOfBirth: "",
+      occupation: "",
+      country: "",
+      address1: "",
+      address2: "",
+      nicPassportNumber: "",
+      postalCode: "",
+      securityQuestion: "",
+      answer: "",
+      password: "",
+      confirmPassword: "",
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting user form...", formData); // ✅ add this
 
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match!");
+      setSuccess(null);
       return;
     }
 
     try {
-      const response = await fetch("http://localhost:8080/api/register", {
+      const response = await fetch("/api/users/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,17 +72,20 @@ const UserRegister = () => {
         body: JSON.stringify(formData),
       });
 
-      if (response.ok) {
-        console.log("Registration successful");
-        navigate("/confirm");
-      } else {
-        const text = await response.text();
-        console.error("Server error:", text);
-        setError("Registration failed. Please try again.");
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Registration failed.");
       }
-    } catch (error) {
-      console.error("Fetch error:", error); // ✅ catch network failures
-      setError("Error connecting to server.");
+
+      const data = await response.json();
+      console.log("User registered:", data);
+      setSuccess("User registered successfully!");
+      setError(null);
+      resetForm();
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+      setSuccess(null);
     }
   };
 
@@ -70,6 +93,7 @@ const UserRegister = () => {
     <div className="user-register-container">
       <h2 className="user-register-heading">User Registration</h2>
       {error && <p className="error-message">{error}</p>}
+      {success && <p className="success-message">{success}</p>}
 
       <form className="user-register-form" onSubmit={handleSubmit}>
         <div className="user-form-grid">
@@ -106,6 +130,7 @@ const UserRegister = () => {
                 name={name}
                 value={formData[name]}
                 onChange={handleInputChange}
+                required
               />
             </div>
           ))}

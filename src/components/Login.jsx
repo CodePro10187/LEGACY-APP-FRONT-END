@@ -1,4 +1,3 @@
-// src/components/LoginPage.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
@@ -9,14 +8,35 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
 
-    // Simulate a login request
-    if (email === "test@example.com" && password === "password") {
-      navigate("/dashboard");
-    } else {
-      setError("Invalid email or password. Please try again.");
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Invalid email or password.");
+      }
+
+      const data = await response.json();
+
+      // Check user type and navigate to appropriate dashboard
+      if (data.userType === "user") {
+        navigate("/user-dashboard");
+      } else if (data.userType === "lawyer") {
+        navigate("/lawyer-dashboard");
+      } else {
+        setError("Unknown user type.");
+      }
+    } catch (err) {
+      setError(err.message);
     }
   };
 
