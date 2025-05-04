@@ -10,6 +10,8 @@ import SubscriptionPlan from "./components/SubscriptionPlan";
 import ForgotPassword from "./components/ForgotPassword";
 import HelpFAQ from "./components/HelpFAQ";
 import ContactLawyer from "./components/ContactLawyer";
+import UserProfileEdit from "./components/UserProfileEdit";
+import LawyerProfileEdit from "./components/LawyerProfileEdit";
 
 import DigitalAssets from "./components/DigitalAssets";
 import Home from "./components/Home";
@@ -48,6 +50,13 @@ function App() {
         <Link to="/ContactLawyer" style={{ marginRight: 10 }}>
           ContactLawyer
         </Link>
+        <p>/n</p>
+        <Link to="/UserProfileEdit" style={{ marginRight: 10 }}>
+          UserProfileEdit
+        </Link>
+        <Link to="/LawyerProfileEdit" style={{ marginRight: 10 }}>
+          LawyerProfileEdit
+        </Link>
 
         <Link to="/DigitalAssets" style={{ marginRight: 10 }}>
           DigitalAssets
@@ -65,6 +74,8 @@ function App() {
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/HelpFAQ" element={<HelpFAQ />} />
         <Route path="/ContactLawyer" element={<ContactLawyer />} />
+        <Route path="/UserProfileEdit" element={<UserProfileEdit />} />
+        <Route path="/LawyerProfileEdit" element={<LawyerProfileEdit />} />
 
         <Route path="/DigitalAssets" element={<DigitalAssets />} />
         <Route path="/" element={<Home />} />

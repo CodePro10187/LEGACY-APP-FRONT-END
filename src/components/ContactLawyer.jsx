@@ -11,10 +11,12 @@ const ContactLawyer = ({ isPremiumUser }) => {
   const [chatEnabled, setChatEnabled] = useState(false);
 
   useEffect(() => {
-    // Fetch lawyer data from your backend
     axios
       .get("/api/lawyers")
-      .then((response) => setLawyers(response.data))
+      .then((response) => {
+        console.log("Lawyers data:", response.data);
+        setLawyers(response.data);
+      })
       .catch((error) => console.error("Error fetching lawyers:", error));
   }, []);
 

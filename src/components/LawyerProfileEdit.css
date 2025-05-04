@@ -1,0 +1,111 @@
+.lawyer-profile-edit-container {
+  max-width: 760px;
+  margin: 50px auto;
+  padding: 40px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  font-family: "Inter", "Segoe UI", sans-serif;
+  color: #2c2c2c;
+}
+
+.lawyer-profile-edit-container h2 {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 32px;
+  color: #1e1e2f;
+  font-weight: 600;
+}
+
+.lawyer-profile-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.profile-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ddd;
+  margin-bottom: 10px;
+}
+
+.lawyer-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #444;
+}
+
+.form-group input {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  font-size: 15px;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+.error-message,
+.success-message {
+  text-align: center;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.error-message {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.success-message {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+button[type="submit"] {
+  margin-top: 30px;
+  padding: 14px;
+  background: linear-gradient(to right, #6366f1, #4f46e5);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s;
+}
+
+button[type="submit"]:hover {
+  background: linear-gradient(to right, #4f46e5, #3730a3);
+  transform: translateY(-1px);
+}
