@@ -29,7 +29,11 @@ export default function Header() {
         {user ? (
           <div className="user-info">
             <img
-              src={user.profilePicture || "/default-profile.png"} // Fallback image if no profile picture
+              src={
+                user.profileImage
+                  ? `http://localhost:8080${user.profileImage}`
+                  : "/default-profile.png"
+              }
               alt="Profile"
               className="profile-pic"
             />
