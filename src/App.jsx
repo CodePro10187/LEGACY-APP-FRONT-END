@@ -1,5 +1,6 @@
+// src/App.jsx
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import Login from "./components/Login";
 import UserRegister from "./components/UserRegister";
 import ConfirmationPage from "./components/ConfirmationPage";
@@ -12,13 +13,12 @@ import HelpFAQ from "./components/HelpFAQ";
 import ContactLawyer from "./components/ContactLawyer";
 import UserProfileEdit from "./components/UserProfileEdit";
 import LawyerProfileEdit from "./components/LawyerProfileEdit";
-
 import DigitalAssets from "./components/DigitalAssets";
 import Home from "./components/Home";
 
 function App() {
   return (
-    <Router>
+    <>
       <nav style={{ margin: 10 }}>
         <Link to="/Login" style={{ marginRight: 10 }}>
           Login
@@ -50,19 +50,19 @@ function App() {
         <Link to="/ContactLawyer" style={{ marginRight: 10 }}>
           ContactLawyer
         </Link>
-        <p>/n</p>
+        <br />
         <Link to="/UserProfileEdit" style={{ marginRight: 10 }}>
           UserProfileEdit
         </Link>
         <Link to="/LawyerProfileEdit" style={{ marginRight: 10 }}>
           LawyerProfileEdit
         </Link>
-
         <Link to="/DigitalAssets" style={{ marginRight: 10 }}>
           DigitalAssets
         </Link>
         <Link to="/">Home</Link>
       </nav>
+
       <Routes>
         <Route path="/Login" element={<Login />} />
         <Route path="/UserRegister" element={<UserRegister />} />
@@ -76,11 +76,10 @@ function App() {
         <Route path="/ContactLawyer" element={<ContactLawyer />} />
         <Route path="/UserProfileEdit" element={<UserProfileEdit />} />
         <Route path="/LawyerProfileEdit" element={<LawyerProfileEdit />} />
-
         <Route path="/DigitalAssets" element={<DigitalAssets />} />
         <Route path="/" element={<Home />} />
       </Routes>
-    </Router>
+    </>
   );
 }
 

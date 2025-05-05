@@ -22,6 +22,7 @@ const LawyerRegister = () => {
     lawFirmAddress: "",
     professionalLicenseNumber: "",
     licenseExpiryDate: "",
+    bio: "", // Add bio field with an empty string
   });
 
   const [documentFile, setDocumentFile] = useState(null);
@@ -86,6 +87,7 @@ const LawyerRegister = () => {
           lawFirmAddress: "",
           professionalLicenseNumber: "",
           licenseExpiryDate: "",
+          bio: "", // Reset bio field to empty
         });
         setDocumentFile(null);
       } else {
@@ -171,6 +173,18 @@ const LawyerRegister = () => {
               name="document"
               accept=".pdf,.jpg,.jpeg,.png"
               onChange={handleFileChange}
+            />
+          </div>
+
+          {/* Bio Field */}
+          <div className="form-group full-width">
+            <label htmlFor="bio">Bio</label>
+            <textarea
+              id="bio"
+              name="bio"
+              value={formData.bio}
+              onChange={handleInputChange}
+              placeholder="Write your bio here"
             />
           </div>
         </div>

@@ -1,9 +1,16 @@
+// src/components/Header.jsx
 import React from "react";
-import "./Header.css";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext"; // Correct path to UserContext
 
 export default function Header() {
-  const navigate = useNavigate(); // Hook for programmatic navigation
+  const navigate = useNavigate();
+  const { user, setUser } = useUser();
+
+  const handleLogout = () => {
+    setUser(null); // Clear user context
+    navigate("/"); // Navigate to homepage or login
+  };
 
   return (
     <header className="header">
@@ -19,15 +26,33 @@ export default function Header() {
       </nav>
 
       <div className="auth-buttons">
-        <button className="button-login" onClick={() => navigate("/Login")}>
-          Login
-        </button>
-        <button
-          className="button-signup"
-          onClick={() => navigate("/RegisterSelection")}
-        >
-          Sign Up
-        </button>
+        {user ? (
+          <div className="user-info">
+            <img
+              src={user.profilePicture || "/default-profile.png"} // Fallback image if no profile picture
+              alt="Profile"
+              className="profile-pic"
+            />
+            <span className="user-name">
+              {user.prefix} {user.firstName} {user.lastName}
+            </span>
+            <button onClick={handleLogout} className="button-logout">
+              Logout
+            </button>
+          </div>
+        ) : (
+          <>
+            <button className="button-login" onClick={() => navigate("/Login")}>
+              Login
+            </button>
+            <button
+              className="button-signup"
+              onClick={() => navigate("/RegisterSelection")}
+            >
+              Sign Up
+            </button>
+          </>
+        )}
       </div>
     </header>
   );

@@ -1,4 +1,3 @@
-// src/components/LawyerProfileEdit.jsx
 import React, { useState, useEffect } from "react";
 import "./LawyerProfileEdit.css";
 
@@ -21,6 +20,7 @@ const LawyerProfileEdit = ({ lawyerId }) => {
     lawFirmAddress: "",
     professionalLicenseNumber: "",
     licenseExpiryDate: "",
+    bio: "", // ✅ Added bio
   });
 
   const [profileImage, setProfileImage] = useState(null);
@@ -29,7 +29,6 @@ const LawyerProfileEdit = ({ lawyerId }) => {
   const [message, setMessage] = useState({ error: null, success: null });
 
   useEffect(() => {
-    // Load existing profile data
     const fetchLawyer = async () => {
       try {
         const res = await fetch(`/api/lawyers/${lawyerId}`);
@@ -144,6 +143,19 @@ const LawyerProfileEdit = ({ lawyerId }) => {
               />
             </div>
           ))}
+
+          {/* ✅ Add bio textarea here */}
+          <div className="form-group full-width">
+            <label htmlFor="bio">Biography</label>
+            <textarea
+              id="bio"
+              name="bio"
+              rows="5"
+              value={formData.bio}
+              onChange={handleInputChange}
+              placeholder="Write a short biography..."
+            />
+          </div>
 
           <div className="form-group full-width">
             <label htmlFor="documentFile">Upload Verification Document</label>

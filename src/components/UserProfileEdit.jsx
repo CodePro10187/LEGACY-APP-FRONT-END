@@ -1,8 +1,9 @@
-// src/components/UserProfileEdit.jsx
 import React, { useState, useEffect } from "react";
+import { useUser } from "../context/UserContext";
 import "./UserProfileEdit.css";
 
-const UserProfileEdit = ({ userId }) => {
+const UserProfileEdit = () => {
+  const { user, setUser } = useUser();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -23,21 +24,19 @@ const UserProfileEdit = ({ userId }) => {
   const [profileImage, setProfileImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [message, setMessage] = useState({ error: null, success: null });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const res = await fetch(`/api/users/${userId}`);
-        const data = await res.json();
-        setFormData(data);
-        if (data.profileImageUrl) setPreviewImage(data.profileImageUrl);
-      } catch (err) {
-        setMessage({ error: "Failed to load user data", success: null });
-      }
-    };
-
-    fetchUserData();
-  }, [userId]);
+    if (user) {
+      console.log("User object from context:", user);
+      setFormData((prev) => ({ ...prev, ...user }));
+      if (user.profileImageUrl) setPreviewImage(user.profileImageUrl);
+      setLoading(false);
+    } else {
+      setMessage({ error: "Failed to load user data", success: null });
+      setLoading(false);
+    }
+  }, [user]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -46,33 +45,56 @@ const UserProfileEdit = ({ userId }) => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setProfileImage(file);
-    setPreviewImage(URL.createObjectURL(file));
+    if (file) {
+      setProfileImage(file);
+      setPreviewImage(URL.createObjectURL(file));
+    } else {
+      setProfileImage(null);
+      setPreviewImage(null);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const form = new FormData();
-    for (const key in formData) {
-      form.append(key, formData[key]);
-    }
+
+    // Append user details as JSON blob
+    form.append(
+      "userDetails",
+      new Blob([JSON.stringify(formData)], { type: "application/json" })
+    );
+
+    // Only append image if selected
     if (profileImage) {
       form.append("profileImage", profileImage);
     }
 
     try {
-      const res = await fetch(`/api/users/${userId}`, {
+      const res = await fetch(`/api/users/${user.id}`, {
         method: "PUT",
         body: form,
       });
 
-      if (!res.ok) throw new Error(await res.text());
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(errorText);
+      }
+
+      const updatedUser = await res.json();
+      setUser(updatedUser);
       setMessage({ error: null, success: "Profile updated successfully!" });
     } catch (err) {
-      setMessage({ error: err.message, success: null });
+      setMessage({
+        error: err.message || "An unexpected error occurred.",
+        success: null,
+      });
     }
   };
+
+  if (loading) {
+    return <p>Loading profile...</p>;
+  }
 
   return (
     <div className="user-profile-edit-container">
@@ -93,7 +115,6 @@ const UserProfileEdit = ({ userId }) => {
           {[
             { label: "First Name", name: "firstName" },
             { label: "Last Name", name: "lastName" },
-            { label: "Prefix", name: "prefix" },
             { label: "Email", name: "email", type: "email" },
             { label: "Mobile Number", name: "mobileNumber" },
             { label: "Date of Birth", name: "dateOfBirth", type: "date" },
@@ -115,7 +136,7 @@ const UserProfileEdit = ({ userId }) => {
                 id={name}
                 type={type}
                 name={name}
-                value={formData[name]}
+                value={formData[name] || ""}
                 onChange={handleInputChange}
                 required
               />
