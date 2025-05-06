@@ -1,14 +1,13 @@
+// src/components/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
-import { useUser } from "../context/UserContext"; // adjust path as needed
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const { setUser } = useUser(); // get setUser from context
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,8 +27,6 @@ const Login = () => {
       }
 
       const data = await response.json();
-
-      setUser(data); // <- Store user data in context
 
       // Check user type and navigate to appropriate dashboard
       if (data.userType === "user") {

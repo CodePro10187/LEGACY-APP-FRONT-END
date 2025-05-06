@@ -1,9 +1,8 @@
+// src/components/UserProfileEdit.jsx
 import React, { useState, useEffect } from "react";
-import { useUser } from "../context/UserContext";
 import "./UserProfileEdit.css";
 
 const UserProfileEdit = () => {
-  const { user, setUser } = useUser();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -27,16 +26,33 @@ const UserProfileEdit = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user) {
-      console.log("User object from context:", user);
-      setFormData((prev) => ({ ...prev, ...user }));
-      if (user.profileImageUrl) setPreviewImage(user.profileImageUrl);
+    // Simulate loading user data (since user context is removed)
+    const mockUser = {
+      firstName: "John",
+      lastName: "Doe",
+      email: "john.doe@example.com",
+      mobileNumber: "1234567890",
+      dateOfBirth: "1990-01-01",
+      occupation: "Developer",
+      country: "USA",
+      address1: "123 Main St",
+      address2: "Apt 4B",
+      nicPassportNumber: "ABC123456",
+      postalCode: "12345",
+      securityQuestion: "What is your pet's name?",
+      answer: "Fluffy",
+      profileImageUrl: "/path/to/image.jpg",
+    };
+
+    if (mockUser) {
+      setFormData((prev) => ({ ...prev, ...mockUser }));
+      if (mockUser.profileImageUrl) setPreviewImage(mockUser.profileImageUrl);
       setLoading(false);
     } else {
       setMessage({ error: "Failed to load user data", success: null });
       setLoading(false);
     }
-  }, [user]);
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -71,7 +87,8 @@ const UserProfileEdit = () => {
     }
 
     try {
-      const res = await fetch(`/api/users/${user.id}`, {
+      const res = await fetch(`/api/users/123`, {
+        // Mock user ID used
         method: "PUT",
         body: form,
       });
@@ -82,7 +99,6 @@ const UserProfileEdit = () => {
       }
 
       const updatedUser = await res.json();
-      setUser(updatedUser);
       setMessage({ error: null, success: "Profile updated successfully!" });
     } catch (err) {
       setMessage({
