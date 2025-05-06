@@ -22,7 +22,7 @@ const LawyerRegister = () => {
     lawFirmAddress: "",
     professionalLicenseNumber: "",
     licenseExpiryDate: "",
-    bio: "", // Add bio field with an empty string
+    bio: "",
   });
 
   const [documentFile, setDocumentFile] = useState(null);
@@ -51,6 +51,7 @@ const LawyerRegister = () => {
     for (let key in formData) {
       formPayload.append(key, formData[key]);
     }
+
     if (documentFile) {
       formPayload.append("documentFile", documentFile);
     }
@@ -87,7 +88,7 @@ const LawyerRegister = () => {
           lawFirmAddress: "",
           professionalLicenseNumber: "",
           licenseExpiryDate: "",
-          bio: "", // Reset bio field to empty
+          bio: "",
         });
         setDocumentFile(null);
       } else {
@@ -166,17 +167,16 @@ const LawyerRegister = () => {
           ))}
 
           <div className="form-group full-width">
-            <label htmlFor="document">Upload Proof Document</label>
+            <label htmlFor="documentFile">Upload Proof Document</label>
             <input
-              id="document"
+              id="documentFile"
               type="file"
-              name="document"
+              name="documentFile"
               accept=".pdf,.jpg,.jpeg,.png"
               onChange={handleFileChange}
             />
           </div>
 
-          {/* Bio Field */}
           <div className="form-group full-width">
             <label htmlFor="bio">Bio</label>
             <textarea
@@ -188,6 +188,7 @@ const LawyerRegister = () => {
             />
           </div>
         </div>
+
         <button type="submit">Register</button>
       </form>
     </div>

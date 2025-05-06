@@ -12,7 +12,11 @@ import HelpFAQ from "./components/HelpFAQ";
 import LawyerContactDetail from "./components/LawyerContactDetail";
 import LawyerList from "./components/LawyerList";
 import UserProfileEdit from "./components/UserProfileEdit";
+import ChatApp from "./components/ChatApp";
 import LawyerProfileEdit from "./components/LawyerProfileEdit";
+import LawyerDashboard from "./components/LawyerDashboard";
+import ContractedUsers from "./components/ContractedUsers";
+
 import DigitalAssets from "./components/DigitalAssets";
 import Home from "./components/Home";
 
@@ -53,7 +57,6 @@ function App() {
         <Link to="/LawyerList" style={{ marginRight: 10 }}>
           LawyerList
         </Link>
-
         <br />
         <Link to="/UserProfileEdit" style={{ marginRight: 10 }}>
           UserProfileEdit
@@ -61,6 +64,16 @@ function App() {
         <Link to="/LawyerProfileEdit" style={{ marginRight: 10 }}>
           LawyerProfileEdit
         </Link>
+        <Link to="/ChatApp" style={{ marginRight: 10 }}>
+          ChatApp
+        </Link>
+        <Link to="/LawyerDashboard" style={{ marginRight: 10 }}>
+          LawyerDashboard
+        </Link>
+        <Link to="/ContractedUsers" style={{ marginRight: 10 }}>
+          ContractedUsers
+        </Link>
+
         <Link to="/DigitalAssets" style={{ marginRight: 10 }}>
           DigitalAssets
         </Link>
@@ -81,6 +94,10 @@ function App() {
         <Route path="/LawyerList" element={<LawyerList />} />
         <Route path="/UserProfileEdit" element={<UserProfileEdit />} />
         <Route path="/LawyerProfileEdit" element={<LawyerProfileEdit />} />
+        <Route path="/ChatApp" element={<ChatApp />} />
+        <Route path="/LawyerDashboard" element={<LawyerDashboard />} />
+        <Route path="/ContractedUsers" element={<ContractedUsers />} />
+
         <Route path="/DigitalAssets" element={<DigitalAssets />} />
         <Route path="/" element={<Home />} />
       </Routes>
