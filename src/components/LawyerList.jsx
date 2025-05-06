@@ -1,6 +1,5 @@
-// LawyerList.jsx
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "axios"; // Added missing import
 import "./LawyerList.css";
 import LawyerContactDetail from "./LawyerContactDetail";
 
