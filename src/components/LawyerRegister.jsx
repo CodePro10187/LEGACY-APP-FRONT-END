@@ -58,7 +58,7 @@ const LawyerRegister = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/api/lawyers/register",
+        "http://localhost/digilegacy-backend/registerlawyer.php",
         {
           method: "POST",
           body: formPayload,

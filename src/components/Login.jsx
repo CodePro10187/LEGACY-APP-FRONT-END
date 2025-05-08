@@ -14,7 +14,7 @@ const Login = () => {
     setError(null);
 
     try {
-      const response = await fetch("http://localhost:8080/api/auth/login", {
+      const response = await fetch("http://localhost/digilegacy-backend/login.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -30,9 +30,9 @@ const Login = () => {
 
       // Check user type and navigate to appropriate dashboard
       if (data.userType === "user") {
-        navigate("/user-dashboard");
+        navigate("/");
       } else if (data.userType === "lawyer") {
-        navigate("/lawyer-dashboard");
+        navigate("/LawyerDashboard");
       } else {
         setError("Unknown user type.");
       }
