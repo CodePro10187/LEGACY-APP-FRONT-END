@@ -20,6 +20,7 @@ const UserRegister = () => {
     password: "",
     confirmPassword: "",
     bio: "",
+    profilePicture: null, // Add a field to store the uploaded file
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -29,6 +30,14 @@ const UserRegister = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Handle file input change (for profile picture)
+  const handleFileChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      profilePicture: e.target.files[0], // Store the selected file
+    }));
   };
 
   const resetForm = () => {
@@ -44,14 +53,19 @@ const UserRegister = () => {
       return;
     }
 
+    const formDataToSend = new FormData(); // Use FormData for file upload
+    for (const key in formData) {
+      formDataToSend.append(key, formData[key]);
+    }
+
     try {
-      const response = await fetch("http://localhost/digilegacy-backend/registeruser.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "http://localhost/digilegacy-backend/registeruser.php",
+        {
+          method: "POST",
+          body: formDataToSend, // Send the FormData
+        }
+      );
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -115,6 +129,18 @@ const UserRegister = () => {
               />
             </div>
           ))}
+
+          {/* Add Profile Picture Upload Field */}
+          <div className="form-group full-width">
+            <label htmlFor="profilePicture">Profile Picture</label>
+            <input
+              id="profilePicture"
+              type="file"
+              name="profilePicture"
+              accept="image/*"
+              onChange={handleFileChange} // Handle file change
+            />
+          </div>
 
           <div className="form-group full-width">
             <label htmlFor="bio">Bio</label>

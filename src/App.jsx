@@ -16,6 +16,14 @@ import ChatApp from "./components/ChatApp";
 import LawyerProfileEdit from "./components/LawyerProfileEdit";
 import LawyerDashboard from "./components/LawyerDashboard";
 import ContractedUsers from "./components/ContractedUsers";
+import AdminForm from "./components/AdminForm";
+import AdminPanel from "./components/AdminPanel";
+import AdminManagement from "./components/AdminManagement";
+import AuditLogs from "./components/AuditLogs";
+import LegalTemplates from "./components/LegalTemplates";
+import PlatformSettings from "./components/PlatformSettings";
+import Security from "./components/Security";
+import SystemReport from "./components/SystemReport";
 
 import DigitalAssets from "./components/DigitalAssets";
 import Home from "./components/Home";
@@ -73,6 +81,31 @@ function App() {
         <Link to="/ContractedUsers" style={{ marginRight: 10 }}>
           ContractedUsers
         </Link>
+        <Link to="/AdminForm" style={{ marginRight: 10 }}>
+          AdminForm
+        </Link>
+        <Link to="/AdminPanel" style={{ marginRight: 10 }}>
+          AdminPanel
+        </Link>
+        <Link to="/AdminManagement" style={{ marginRight: 10 }}>
+          AdminManagement
+        </Link>
+        <Link to="/AuditLogs" style={{ marginRight: 10 }}>
+          AuditLogs
+        </Link>
+        <Link to="/LegalTemplates" style={{ marginRight: 10 }}>
+          LegalTemplates
+        </Link>
+        <Link to="/PlatformSettings" style={{ marginRight: 10 }}>
+          PlatformSettings
+        </Link>
+        <Link to="/Security" style={{ marginRight: 10 }}>
+          Security
+        </Link>
+        <br />
+        <Link to="/SystemReport" style={{ marginRight: 10 }}>
+          SystemReport
+        </Link>
 
         <Link to="/DigitalAssets" style={{ marginRight: 10 }}>
           DigitalAssets
@@ -97,6 +130,14 @@ function App() {
         <Route path="/ChatApp" element={<ChatApp />} />
         <Route path="/LawyerDashboard" element={<LawyerDashboard />} />
         <Route path="/ContractedUsers" element={<ContractedUsers />} />
+        <Route path="/AdminForm" element={<AdminForm />} />
+        <Route path="/AdminPanel" element={<AdminPanel />} />
+        <Route path="/AdminManagement" element={<AdminManagement />} />
+        <Route path="/AuditLogs" element={<AuditLogs />} />
+        <Route path="/LegalTemplates" element={<LegalTemplates />} />
+        <Route path="/PlatformSettings" element={<PlatformSettings />} />
+        <Route path="/Security" element={<Security />} />
+        <Route path="/SystemReport" element={<SystemReport />} />
 
         <Route path="/DigitalAssets" element={<DigitalAssets />} />
         <Route path="/" element={<Home />} />

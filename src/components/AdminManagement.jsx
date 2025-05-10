@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import Header from "../common/Header";
 import Footer from "../common/Footer";
-import AdminForm from "../components/AdminForm";
+import AdminForm from "./AdminForm";
 import "./AdminPanel.css";
 
 const AdminManagement = () => {
@@ -26,7 +26,11 @@ const AdminManagement = () => {
   };
 
   const handleUpdate = (updatedAdmin) => {
-    setAdmins(admins.map((admin) => (admin.id === updatedAdmin.id ? updatedAdmin : admin)));
+    setAdmins(
+      admins.map((admin) =>
+        admin.id === updatedAdmin.id ? updatedAdmin : admin
+      )
+    );
     setEditingAdmin(null);
   };
 
@@ -35,23 +39,54 @@ const AdminManagement = () => {
       <Header />
       <div className="dashboard-container">
         <aside className="sidebar">
-          <button onClick={() => navigate("/AdminPanel")} className="sidebar-btn">
+          <button
+            onClick={() => navigate("/AdminPanel")}
+            className="sidebar-btn"
+          >
             🏠 Dashboard
           </button>
-          <button onClick={() => navigate("/AdminManagement")} className="sidebar-btn">
+          <button
+            onClick={() => navigate("/AdminManagement")}
+            className="sidebar-btn"
+          >
             ⚙️ Admin Management
           </button>
-          <button onClick={() => navigate("/PlatformSettings")} className="sidebar-btn">🖨️ Platform Settings</button>
-          <button onClick={() => navigate("/AuditLogs")} className="sidebar-btn">📈 Audit Logs</button>
-          <button onClick={() => navigate("/LegalTemplates")} className="sidebar-btn">📄 Legal Templates</button>
-          <button onClick={() => navigate("/SystemReport")} className="sidebar-btn">📊 System Report</button>
-          <button onClick={() => navigate("/Security")} className="sidebar-btn">🛡️ Security</button>
+          <button
+            onClick={() => navigate("/PlatformSettings")}
+            className="sidebar-btn"
+          >
+            🖨️ Platform Settings
+          </button>
+          <button
+            onClick={() => navigate("/AuditLogs")}
+            className="sidebar-btn"
+          >
+            📈 Audit Logs
+          </button>
+          <button
+            onClick={() => navigate("/LegalTemplates")}
+            className="sidebar-btn"
+          >
+            📄 Legal Templates
+          </button>
+          <button
+            onClick={() => navigate("/SystemReport")}
+            className="sidebar-btn"
+          >
+            📊 System Report
+          </button>
+          <button onClick={() => navigate("/Security")} className="sidebar-btn">
+            🛡️ Security
+          </button>
         </aside>
 
         <main className="main-content">
           <h2>Admin Management</h2>
 
-          <AdminForm onSubmit={editingAdmin ? handleUpdate : handleAdd} editingAdmin={editingAdmin} />
+          <AdminForm
+            onSubmit={editingAdmin ? handleUpdate : handleAdd}
+            editingAdmin={editingAdmin}
+          />
 
           <table className="admin-table">
             <thead>
@@ -70,7 +105,9 @@ const AdminManagement = () => {
                   <td>{admin.role}</td>
                   <td>
                     <button onClick={() => handleEdit(admin)}>Edit</button>
-                    <button onClick={() => handleDelete(admin.id)}>Delete</button>
+                    <button onClick={() => handleDelete(admin.id)}>
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}

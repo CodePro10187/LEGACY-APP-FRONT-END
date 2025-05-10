@@ -23,6 +23,7 @@ const LawyerRegister = () => {
     professionalLicenseNumber: "",
     licenseExpiryDate: "",
     bio: "",
+    profilePicture: null, // Added field for profile picture
   });
 
   const [documentFile, setDocumentFile] = useState(null);
@@ -34,8 +35,16 @@ const LawyerRegister = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handle profile picture change
   const handleFileChange = (e) => {
-    setDocumentFile(e.target.files[0]);
+    if (e.target.name === "profilePicture") {
+      setFormData((prev) => ({
+        ...prev,
+        profilePicture: e.target.files[0], // Store the selected profile picture file
+      }));
+    } else {
+      setDocumentFile(e.target.files[0]); // For the document file
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -53,7 +62,11 @@ const LawyerRegister = () => {
     }
 
     if (documentFile) {
-      formPayload.append("documentFile", documentFile);
+      formPayload.append("documentFile", documentFile); // Append document file
+    }
+
+    if (formData.profilePicture) {
+      formPayload.append("profilePicture", formData.profilePicture); // Append profile picture
     }
 
     try {
@@ -89,6 +102,7 @@ const LawyerRegister = () => {
           professionalLicenseNumber: "",
           licenseExpiryDate: "",
           bio: "",
+          profilePicture: null,
         });
         setDocumentFile(null);
       } else {
@@ -165,6 +179,18 @@ const LawyerRegister = () => {
               />
             </div>
           ))}
+
+          {/* Add Profile Picture Upload Field */}
+          <div className="form-group full-width">
+            <label htmlFor="profilePicture">Upload Profile Picture</label>
+            <input
+              id="profilePicture"
+              type="file"
+              name="profilePicture"
+              accept="image/*"
+              onChange={handleFileChange} // Handle profile picture change
+            />
+          </div>
 
           <div className="form-group full-width">
             <label htmlFor="documentFile">Upload Proof Document</label>
