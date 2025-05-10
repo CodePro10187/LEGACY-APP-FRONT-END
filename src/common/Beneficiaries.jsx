@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "./Beneficiaries.css";
 
 const Beneficiaries = () => {
@@ -10,12 +9,11 @@ const Beneficiaries = () => {
   });
 
   const [beneficiariesList, setBeneficiariesList] = useState([]);
+  const [message, setMessage] = useState(null);
+  const [messageType, setMessageType] = useState(""); // success or error
 
   useEffect(() => {
-    // Example placeholder for backend data fetching
-    // axios.get('/api/beneficiaries')
-    //   .then(response => setBeneficiariesList(response.data))
-    //   .catch(error => console.error('Error fetching beneficiaries:', error));
+    // Optional: fetch existing beneficiaries if needed
   }, []);
 
   const handleChange = (e) => {
@@ -23,35 +21,67 @@ const Beneficiaries = () => {
     setBeneficiary((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleAddBeneficiary = () => {
+  const handleAddBeneficiary = async () => {
     if (
       !beneficiary.name ||
       !beneficiary.personalCode ||
       !beneficiary.relationship
-    )
+    ) {
+      setMessage("Please fill all fields.");
+      setMessageType("error");
       return;
+    }
 
-    const newBeneficiary = {
-      ...beneficiary,
-      sharedCount: 1, // Placeholder
-      addedDate: new Date().toISOString().split("T")[0],
-    };
+    try {
+      const response = await fetch("http://localhost/digilegacy-backend/add_beneficiary.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(beneficiary),
+      });
 
-    setBeneficiariesList((prev) => [...prev, newBeneficiary]);
-    setBeneficiary({ name: "", personalCode: "", relationship: "" });
+      const result = await response.json();
+
+      if (result.success) {
+        const newEntry = {
+          ...beneficiary,
+          sharedCount: 1,
+          addedDate: new Date().toISOString().split("T")[0],
+        };
+        setBeneficiariesList((prev) => [...prev, newEntry]);
+        setMessage("Beneficiary added successfully.");
+        setMessageType("success");
+        setBeneficiary({ name: "", personalCode: "", relationship: "" });
+      } else {
+        setMessage(result.message || "Failed to add beneficiary.");
+        setMessageType("error");
+      }
+    } catch (error) {
+      setMessage("Server error. Please try again later.");
+      setMessageType("error");
+      
+    }
   };
 
   return (
     <div className="beneficiaries-container">
       <h2>Add Beneficiary</h2>
+
+      {message && (
+        <div className={`message ${messageType}`}>
+          {message}
+        </div>
+      )}
+
       <div className="input-grid">
         <div className="input-group">
-          <label htmlFor="name">Beneficiary Name</label>
+          <label htmlFor="name">NIC</label>
           <input
             id="name"
             type="text"
             name="name"
-            placeholder="Beneficiary Name"
+            placeholder="NIC"
             value={beneficiary.name}
             onChange={handleChange}
           />
@@ -85,7 +115,7 @@ const Beneficiaries = () => {
       <table>
         <thead>
           <tr>
-            <th>Beneficiary Name</th>
+            <th>NIC</th>
             <th>Relationship</th>
             <th>Shared Count</th>
             <th>Added Date</th>
