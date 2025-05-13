@@ -24,6 +24,7 @@ import LegalTemplates from "./components/LegalTemplates";
 import PlatformSettings from "./components/PlatformSettings";
 import Security from "./components/Security";
 import SystemReport from "./components/SystemReport";
+import ContactFormTesting from "./components/ContactFormTesting";
 
 import DigitalAssets from "./components/DigitalAssets";
 import Home from "./components/Home";
@@ -106,6 +107,9 @@ function App() {
         <Link to="/SystemReport" style={{ marginRight: 10 }}>
           SystemReport
         </Link>
+        <Link to="/ContactFormTesting" style={{ marginRight: 10 }}>
+          ContactFormTesting
+        </Link>
 
         <Link to="/DigitalAssets" style={{ marginRight: 10 }}>
           DigitalAssets
@@ -138,6 +142,7 @@ function App() {
         <Route path="/PlatformSettings" element={<PlatformSettings />} />
         <Route path="/Security" element={<Security />} />
         <Route path="/SystemReport" element={<SystemReport />} />
+        <Route path="/ContactFormTesting" element={<ContactFormTesting />} />
 
         <Route path="/DigitalAssets" element={<DigitalAssets />} />
         <Route path="/" element={<Home />} />

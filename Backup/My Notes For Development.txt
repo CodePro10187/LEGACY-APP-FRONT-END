@@ -1,0 +1,9 @@
+Used the email service - https://dashboard.emailjs.com/admin
+Make a service , template before sending mails.
+
+There is a Profile picture upload issue after adding email part so i decided to back up files and edit it later
+
+The files will be at "Backup" folder
+	UserRegister.jsx - with Email service(do not need confirmation page because it does both)
+	ContactFormTesting - Testing Functioning page with out errors
+	

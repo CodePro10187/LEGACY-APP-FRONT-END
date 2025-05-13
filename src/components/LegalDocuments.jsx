@@ -1,5 +1,6 @@
 import { useState } from "react";
 import FileEditor from "../common/FileEditor";
+import "./LegalDocuments.css";
 
 const templates = {
   NDA: `NON-DISCLOSURE AGREEMENT
@@ -38,17 +39,39 @@ Signed,
 const LegalDocuments = () => {
   const [selectedTemplate, setSelectedTemplate] = useState("");
   const [templateContent, setTemplateContent] = useState("");
+  const [customFileName, setCustomFileName] = useState("");
 
   const handleTemplateSelect = (e) => {
     const templateKey = e.target.value;
     setSelectedTemplate(templateKey);
     setTemplateContent(templates[templateKey]);
+    setCustomFileName(`${templateKey}.txt`);
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type === "text/plain") {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setTemplateContent(event.target.result);
+        setCustomFileName(file.name);
+        setSelectedTemplate(""); // Clear template selection
+      };
+      reader.readAsText(file);
+    } else {
+      alert("Please upload a valid .txt file.");
+    }
   };
 
   return (
-    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
+    <div
+      className="legal-documents"
+      style={{ padding: "2rem", fontFamily: "sans-serif" }}
+    >
       <h1>Create Legal Documents</h1>
-      <p>Select a premade legal document template to edit and save:</p>
+      <p>
+        Select a premade legal document template or upload your own .txt file:
+      </p>
 
       <select onChange={handleTemplateSelect} value={selectedTemplate}>
         <option value="">-- Choose a Template --</option>
@@ -60,11 +83,28 @@ const LegalDocuments = () => {
       <br />
       <br />
 
+      <input type="file" accept=".txt" onChange={handleFileUpload} />
+      <br />
+      <br />
+
       {templateContent && (
-        <FileEditor
-          initialContent={templateContent}
-          initialFileName={`${selectedTemplate}.txt`}
-        />
+        <>
+          <label>
+            Rename file:&nbsp;
+            <input
+              type="text"
+              value={customFileName}
+              onChange={(e) => setCustomFileName(e.target.value)}
+              style={{ width: "250px" }}
+            />
+          </label>
+          <br />
+          <br />
+          <FileEditor
+            initialContent={templateContent}
+            initialFileName={customFileName}
+          />
+        </>
       )}
     </div>
   );

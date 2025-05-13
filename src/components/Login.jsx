@@ -1,11 +1,10 @@
-// src/components/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../context/UserContext"; // Import useUser hook
+import { useUser } from "../context/UserContext";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useUser(); // Get the login function
+  const { login } = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -27,8 +26,14 @@ const Login = () => {
       const data = await response.json();
 
       if (data.success && data.user) {
-        login(data.user); // Store full user data directly
-        navigate("/");
+        // Now pass both user data and userType to the login function
+        login(data.user, data.userType);
+        // Redirect based on userType
+        if (data.userType === "user") {
+          navigate("/");
+        } else if (data.userType === "lawyer") {
+          navigate("/LawyerDashboard");
+        }
       } else {
         setError("Invalid email or password");
       }
@@ -62,6 +67,18 @@ const Login = () => {
         />
         <button type="submit">Login</button>
       </form>
+
+      <div className="login-actions">
+        <button
+          onClick={() => navigate("/forgot-password")}
+          className="link-button"
+        >
+          Forgot Password?
+        </button>
+        <button onClick={() => navigate("/signup")} className="link-button">
+          Don't have an account? Sign Up
+        </button>
+      </div>
     </div>
   );
 };

@@ -35,22 +35,23 @@ const HelpFAQ = () => {
           <strong>What features are free?</strong>
           <br />
           Free users can:
-          <ul>
-            <li>Plan their legacy</li>
-            <li>Save and manage digital assets</li>
-            <li>Share access with beneficiaries</li>
-          </ul>
         </p>
+        <ul>
+          <li>Plan their legacy</li>
+          <li>Save and manage digital assets</li>
+          <li>Share access with beneficiaries</li>
+        </ul>
+
         <p>
           <strong>What are premium features?</strong>
           <br />
           Premium users can:
-          <ul>
-            <li>Create official legal documents using templates</li>
-            <li>Contact a verified lawyer</li>
-            <li>Distribute wills and property with legal support</li>
-          </ul>
         </p>
+        <ul>
+          <li>Create official legal documents using templates</li>
+          <li>Contact a verified lawyer</li>
+          <li>Distribute wills and property with legal support</li>
+        </ul>
       </section>
 
       <section>
@@ -62,38 +63,41 @@ const HelpFAQ = () => {
           <strong>free lawyer assignment</strong> for this purpose. After that,
           you can use a <strong>one-time payment plan</strong>.
         </p>
+
         <p>
           <strong>
             Can beneficiaries submit the certificate without a lawyer?
           </strong>
           <br />
           Yes, but the process is slower due to potential fraud. We will:
-          <ul>
-            <li>Notify all beneficiaries</li>
-            <li>Notify the deceased person’s account</li>
-            <li>Wait for a review period</li>
-            <li>Send verification emails</li>
-          </ul>
         </p>
+        <ul>
+          <li>Notify all beneficiaries</li>
+          <li>Notify the deceased person’s account</li>
+          <li>Wait for a review period</li>
+          <li>Send verification emails</li>
+        </ul>
+
         <p>
           <strong>What documents must lawyers upload when registering?</strong>
           <br />
           All documents must be in <strong>PDF format</strong>:
-          <ul>
-            <li>Government-issued Legal ID</li>
-            <li>Valid Bar Association License</li>
-            <li>Address & Contact Proof</li>
-          </ul>
         </p>
+        <ul>
+          <li>Government-issued Legal ID</li>
+          <li>Valid Bar Association License</li>
+          <li>Address & Contact Proof</li>
+        </ul>
+
         <p>
           <strong>What else can lawyers do?</strong>
           <br />
-          <ul>
-            <li>Verify and process deceased certificates</li>
-            <li>Assist in asset distribution</li>
-            <li>Provide consultation to premium users</li>
-          </ul>
         </p>
+        <ul>
+          <li>Verify and process deceased certificates</li>
+          <li>Assist in asset distribution</li>
+          <li>Provide consultation to premium users</li>
+        </ul>
       </section>
 
       <section>
