@@ -15,6 +15,41 @@ const Beneficiaries = () => {
   const [message, setMessage] = useState(null);
   const [messageType, setMessageType] = useState(""); // 'success' or 'error'
 
+  useEffect(() => {
+    const fetchBeneficiaries = async () => {
+      if (user && user.user_id) {
+        try {
+          const response = await fetch(
+            "http://localhost/digilegacy-backend/get_beneficiaries.php",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                userId: user.user_id,
+              }),
+            }
+          );
+
+          const result = await response.json();
+
+          if (result.success) {
+            setBeneficiariesList(result.beneficiaries);
+          } else {
+            setMessage(result.message || "Failed to load beneficiaries.");
+            setMessageType("error");
+          }
+        } catch (error) {
+          setMessage("Server error. Please try again later.");
+          setMessageType("error");
+        }
+      }
+    };
+
+    fetchBeneficiaries();
+  }, [user]); // Re-fetch when the user changes
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setBeneficiary((prev) => ({ ...prev, [name]: value }));
@@ -57,8 +92,7 @@ const Beneficiaries = () => {
 
       if (result.success) {
         const newEntry = {
-          beneficiaryNIC,
-          beneficiaryPersonalCode,
+          beneficiaryName: result.beneficiaryName, // Use the full name from the response
           relationship,
           sharedCount: 1,
           addedDate: new Date().toISOString().split("T")[0],
@@ -131,8 +165,7 @@ const Beneficiaries = () => {
       <table>
         <thead>
           <tr>
-            <th>Beneficiary NIC</th>
-            <th>Personal Code</th>
+            <th>Beneficiary Name</th>
             <th>Relationship</th>
             <th>Shared Count</th>
             <th>Added Date</th>
@@ -141,8 +174,7 @@ const Beneficiaries = () => {
         <tbody>
           {beneficiariesList.map((b, index) => (
             <tr key={index}>
-              <td>{b.beneficiaryNIC}</td>
-              <td>{b.beneficiaryPersonalCode}</td>
+              <td>{b.beneficiaryName}</td>
               <td>{b.relationship}</td>
               <td>{b.sharedCount}</td>
               <td>{b.addedDate}</td>

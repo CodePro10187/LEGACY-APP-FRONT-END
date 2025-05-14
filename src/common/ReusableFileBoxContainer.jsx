@@ -5,7 +5,7 @@ import "./ReusableFileBoxContainer.css";
 const Modal = ({ onClose, boxId, uploadedBy, onUpdate }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [users, setUsers] = useState([]);
+  const [beneficiaries, setBeneficiaries] = useState([]);
   const [visibleTo, setVisibleTo] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [files, setFiles] = useState([]);
@@ -13,20 +13,22 @@ const Modal = ({ onClose, boxId, uploadedBy, onUpdate }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [boxRes, usersRes] = await Promise.all([
+        const [boxRes, beneficiariesRes] = await Promise.all([
           fetch(
             `http://localhost/digilegacy-backend/get_box_details.php?box_id=${boxId}`
           ),
-          fetch("http://localhost/digilegacy-backend/get_users.php"),
+          fetch(
+            `http://localhost/digilegacy-backend/get_beneficiaries_for_user.php?user_id=${uploadedBy}`
+          ),
         ]);
         const boxData = await boxRes.json();
-        const usersData = await usersRes.json();
+        const beneficiariesData = await beneficiariesRes.json();
+        setBeneficiaries(beneficiariesData);
 
         setTitle(boxData.box.title || "");
         setContent(boxData.box.content || "");
         setVisibleTo(JSON.parse(boxData.box.visible_to || "[]"));
         setFiles(boxData.files || []);
-        setUsers(usersData);
       } catch (err) {
         console.error("Failed to fetch data in modal:", err);
       }
@@ -189,9 +191,9 @@ const Modal = ({ onClose, boxId, uploadedBy, onUpdate }) => {
 
         <label>Visible To (Select multiple users):</label>
         <select multiple value={visibleTo} onChange={handleVisibleToChange}>
-          {users.map((user) => (
-            <option key={user.user_id} value={user.user_id}>
-              {user.first_name} {user.last_name}
+          {beneficiaries.map((b) => (
+            <option key={b.user_id} value={b.user_id}>
+              {b.first_name} {b.last_name}
             </option>
           ))}
         </select>
