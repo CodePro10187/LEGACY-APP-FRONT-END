@@ -75,44 +75,49 @@ const Modal = ({ onClose, boxId, uploadedBy, onUpdate }) => {
     }
   };
 
-  const handleSubmit = async () => {
-    // Validate fields: title, content, and at least one file
-    if (
-      !title ||
-      !content ||
-      selectedFiles.length === 0 ||
-      visibleTo.length === 0
-    ) {
-      alert(
-        "Please fill in the title, content, select at least one file, and choose users who have access."
+  const handleUpdateAccess = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost/digilegacy-backend/upload_file.php",
+        {
+          method: "POST",
+          body: new URLSearchParams({
+            box_id: boxId,
+            uploaded_by: uploadedBy,
+            visible_to: JSON.stringify(visibleTo), // stringified JSON array
+          }),
+        }
       );
+      const result = await response.json();
+      if (result.status === "success") alert("Access updated!");
+      else alert("Failed to update access.");
+    } catch (err) {
+      console.error(err);
+      alert("Error updating access.");
+    }
+  };
+
+  const handleUploadFiles = async () => {
+    if (selectedFiles.length === 0) {
+      alert("No files selected.");
       return;
     }
 
     const formData = new FormData();
     formData.append("box_id", boxId);
     formData.append("uploaded_by", uploadedBy);
-    formData.append("title", title);
-    formData.append("content", content);
-    formData.append("visible_to", JSON.stringify(visibleTo)); // Ensure it's valid JSON
 
-    // Validate and append files
     Array.from(selectedFiles).forEach((file) => {
       if (
         !file.type.startsWith("image/") &&
         !file.type.startsWith("application/pdf")
       ) {
-        alert(
-          `Invalid file type: ${file.name}. Only images and PDFs are allowed.`
-        );
-        setLoading(false);
+        alert(`Invalid file type: ${file.name}`);
         return;
       }
 
       if (file.size > 10 * 1024 * 1024) {
-        // Limit file size to 10MB
-        alert(`File is too large: ${file.name}. Maximum allowed size is 10MB.`);
-        setLoading(false);
+        alert(`File too large: ${file.name}`);
         return;
       }
 
@@ -120,7 +125,6 @@ const Modal = ({ onClose, boxId, uploadedBy, onUpdate }) => {
     });
 
     try {
-      // Send request to backend to upload files and save data
       const response = await fetch(
         "http://localhost/digilegacy-backend/upload_file.php",
         {
@@ -129,28 +133,46 @@ const Modal = ({ onClose, boxId, uploadedBy, onUpdate }) => {
         }
       );
 
-      if (!response.ok) {
-        throw new Error("File upload failed. Please try again.");
-      }
-
       const result = await response.json();
-      console.log("Upload result:", result);
-
       if (result.status === "success") {
         alert("Files uploaded successfully!");
-
-        // Optionally call parent update function after success
-        if (onUpdate) onUpdate(); // Notify parent of successful upload
-
-        // Close the modal or perform other success actions
-        onClose();
+        setSelectedFiles([]); // Clear selection
+        if (onUpdate) onUpdate(); // Refresh parent
+        // Re-fetch files
+        const boxRes = await fetch(
+          `http://localhost/digilegacy-backend/get_box_details.php?box_id=${boxId}`
+        );
+        const boxData = await boxRes.json();
+        setFiles(boxData.files || []);
       } else {
-        // Provide better error feedback
-        alert(`Upload failed: ${result.message || "Unknown error."}`);
+        alert("Upload failed.");
       }
-    } catch (error) {
-      console.error("❌ Upload error:", error);
-      alert(`Error: ${error.message}`);
+    } catch (err) {
+      console.error(err);
+      alert("Error uploading files.");
+    }
+  };
+
+  const handleSaveDetails = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost/digilegacy-backend/upload_file.php",
+        {
+          method: "POST",
+          body: new URLSearchParams({
+            box_id: boxId,
+            uploaded_by: uploadedBy,
+            title,
+            content,
+          }),
+        }
+      );
+      const result = await response.json();
+      if (result.status === "success") alert("Title & content updated!");
+      else alert("Failed to update box.");
+    } catch (err) {
+      console.error(err);
+      alert("Error updating title/content.");
     }
   };
 
@@ -231,14 +253,16 @@ const Modal = ({ onClose, boxId, uploadedBy, onUpdate }) => {
 
         <div className="modal-buttons">
           <button onClick={onClose}>Cancel</button>
-          <button onClick={handleSubmit}>Save</button>
+          <button onClick={handleSaveDetails}>💾 Save Title & Content</button>
+          <button onClick={handleUpdateAccess}>🔐 Update Access</button>
+          <button onClick={handleUploadFiles}>📁 Upload Files</button>
         </div>
       </div>
     </div>
   );
 };
 
-const FileBox = ({ id, onRemove, onUpdate }) => {
+const FileBox = ({ id, title, onRemove, onUpdate }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [boxDetails, setBoxDetails] = useState(null);
   const toggleModal = () => setIsModalOpen(!isModalOpen);
@@ -260,14 +284,13 @@ const FileBox = ({ id, onRemove, onUpdate }) => {
 
   return (
     <div className="file-box">
-      <p>Box #{id}</p>
+      <p>{title}</p> {/* Display the title here */}
       <button onClick={toggleModal} aria-label="Edit box">
         Edit
       </button>
       <button onClick={() => onRemove?.(id)} aria-label="Remove box">
         Remove
       </button>
-
       {isModalOpen && (
         <Modal
           boxId={id}
@@ -293,14 +316,14 @@ const ReusableFileBoxContainer = ({ containerTitle = "File Boxes" }) => {
     );
     const data = await res.json();
     if (data.status === "success") {
-      const boxIds = data.boxes.map((box) => ({
+      const boxDetails = data.boxes.map((box) => ({
         id: box.box_id,
-        title: box.title,
+        title: box.title, // Title is included
         content: box.content,
         visible_to: box.visible_to,
-        files: box.files || [],
+        files: box.files || [], // Ensure files are part of the box data
       }));
-      setBoxes(boxIds);
+      setBoxes(boxDetails); // Store full box data
     }
   };
 
@@ -316,12 +339,12 @@ const ReusableFileBoxContainer = ({ containerTitle = "File Boxes" }) => {
       if (data.status === "success") {
         const boxDetails = data.boxes.map((box) => ({
           id: box.box_id,
-          title: box.title,
+          title: box.title, // Title is included
           content: box.content,
           visible_to: box.visible_to,
           files: box.files || [], // Ensure files are part of the box data
         }));
-        setBoxes(boxDetails); // Store full box data, not just ids
+        setBoxes(boxDetails); // Store full box data
       }
     };
 
@@ -364,7 +387,7 @@ const ReusableFileBoxContainer = ({ containerTitle = "File Boxes" }) => {
   };
 
   const removeBox = async (id) => {
-    setBoxes(boxes.filter((boxId) => boxId !== id));
+    setBoxes(boxes.filter((box) => box.id !== id));
 
     // Optionally remove from DB
     await fetch(
@@ -381,6 +404,7 @@ const ReusableFileBoxContainer = ({ containerTitle = "File Boxes" }) => {
           <FileBox
             key={box.id}
             id={box.id}
+            title={box.title} // Pass title as prop
             onRemove={removeBox}
             onUpdate={refreshBoxes}
           />
