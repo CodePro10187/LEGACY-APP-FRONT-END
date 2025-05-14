@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
+import { useUser } from "../context/UserContext"; // Import useUser hook
 import "./Beneficiaries.css";
 
 const Beneficiaries = () => {
+  const { user } = useUser(); // Get current user from context
+
   const [beneficiary, setBeneficiary] = useState({
-    name: "",
-    personalCode: "",
+    beneficiaryNIC: "",
+    beneficiaryPersonalCode: "",
     relationship: "",
   });
 
   const [beneficiariesList, setBeneficiariesList] = useState([]);
   const [message, setMessage] = useState(null);
-  const [messageType, setMessageType] = useState(""); // success or error
-
-  useEffect(() => {
-    // Optional: fetch existing beneficiaries if needed
-  }, []);
+  const [messageType, setMessageType] = useState(""); // 'success' or 'error'
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,37 +21,56 @@ const Beneficiaries = () => {
   };
 
   const handleAddBeneficiary = async () => {
-    if (
-      !beneficiary.name ||
-      !beneficiary.personalCode ||
-      !beneficiary.relationship
-    ) {
+    const { beneficiaryNIC, beneficiaryPersonalCode, relationship } =
+      beneficiary;
+
+    if (!beneficiaryNIC || !beneficiaryPersonalCode || !relationship) {
       setMessage("Please fill all fields.");
       setMessageType("error");
       return;
     }
 
+    if (!user || !user.user_id) {
+      setMessage("User not logged in.");
+      setMessageType("error");
+      return;
+    }
+
     try {
-      const response = await fetch("http://localhost/digilegacy-backend/add_beneficiary.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(beneficiary),
-      });
+      const response = await fetch(
+        "http://localhost/digilegacy-backend/add_beneficiary.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: user.user_id,
+            beneficiaryNIC,
+            beneficiaryPersonalCode,
+            relationship,
+          }),
+        }
+      );
 
       const result = await response.json();
 
       if (result.success) {
         const newEntry = {
-          ...beneficiary,
+          beneficiaryNIC,
+          beneficiaryPersonalCode,
+          relationship,
           sharedCount: 1,
           addedDate: new Date().toISOString().split("T")[0],
         };
         setBeneficiariesList((prev) => [...prev, newEntry]);
         setMessage("Beneficiary added successfully.");
         setMessageType("success");
-        setBeneficiary({ name: "", personalCode: "", relationship: "" });
+        setBeneficiary({
+          beneficiaryNIC: "",
+          beneficiaryPersonalCode: "",
+          relationship: "",
+        });
       } else {
         setMessage(result.message || "Failed to add beneficiary.");
         setMessageType("error");
@@ -60,7 +78,6 @@ const Beneficiaries = () => {
     } catch (error) {
       setMessage("Server error. Please try again later.");
       setMessageType("error");
-      
     }
   };
 
@@ -68,32 +85,30 @@ const Beneficiaries = () => {
     <div className="beneficiaries-container">
       <h2>Add Beneficiary</h2>
 
-      {message && (
-        <div className={`message ${messageType}`}>
-          {message}
-        </div>
-      )}
+      {message && <div className={`message ${messageType}`}>{message}</div>}
 
       <div className="input-grid">
         <div className="input-group">
-          <label htmlFor="name">NIC</label>
+          <label htmlFor="beneficiaryNIC">Beneficiary NIC</label>
           <input
-            id="name"
+            id="beneficiaryNIC"
             type="text"
-            name="name"
-            placeholder="NIC"
-            value={beneficiary.name}
+            name="beneficiaryNIC"
+            placeholder="Beneficiary NIC"
+            value={beneficiary.beneficiaryNIC}
             onChange={handleChange}
           />
         </div>
         <div className="input-group">
-          <label htmlFor="personalCode">Personal Code</label>
+          <label htmlFor="beneficiaryPersonalCode">
+            Beneficiary Personal Code
+          </label>
           <input
-            id="personalCode"
+            id="beneficiaryPersonalCode"
             type="text"
-            name="personalCode"
-            placeholder="Personal Code"
-            value={beneficiary.personalCode}
+            name="beneficiaryPersonalCode"
+            placeholder="Beneficiary Personal Code"
+            value={beneficiary.beneficiaryPersonalCode}
             onChange={handleChange}
           />
         </div>
@@ -109,13 +124,15 @@ const Beneficiaries = () => {
           />
         </div>
       </div>
+
       <button onClick={handleAddBeneficiary}>Add Beneficiary</button>
 
       <h3>Beneficiaries List</h3>
       <table>
         <thead>
           <tr>
-            <th>NIC</th>
+            <th>Beneficiary NIC</th>
+            <th>Personal Code</th>
             <th>Relationship</th>
             <th>Shared Count</th>
             <th>Added Date</th>
@@ -124,7 +141,8 @@ const Beneficiaries = () => {
         <tbody>
           {beneficiariesList.map((b, index) => (
             <tr key={index}>
-              <td>{b.name}</td>
+              <td>{b.beneficiaryNIC}</td>
+              <td>{b.beneficiaryPersonalCode}</td>
               <td>{b.relationship}</td>
               <td>{b.sharedCount}</td>
               <td>{b.addedDate}</td>

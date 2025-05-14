@@ -44,19 +44,81 @@ const Modal = ({ onClose, boxId, uploadedBy, onUpdate }) => {
     setVisibleTo(selected);
   };
 
+  const handleFileDelete = async (filePath) => {
+    if (!window.confirm("Are you sure you want to delete this file?")) return;
+
+    try {
+      const response = await fetch(
+        "http://localhost/digilegacy-backend/delete_file.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ file_path: filePath }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.status === "success") {
+        // Update local file state
+        setFiles(files.filter((file) => file.file_path !== filePath));
+      } else {
+        alert("Failed to delete file");
+      }
+    } catch (error) {
+      console.error("Delete error:", error);
+      alert("An error occurred while deleting the file.");
+    }
+  };
+
   const handleSubmit = async () => {
+    // Validate fields: title, content, and at least one file
+    if (
+      !title ||
+      !content ||
+      selectedFiles.length === 0 ||
+      visibleTo.length === 0
+    ) {
+      alert(
+        "Please fill in the title, content, select at least one file, and choose users who have access."
+      );
+      return;
+    }
+
     const formData = new FormData();
     formData.append("box_id", boxId);
     formData.append("uploaded_by", uploadedBy);
     formData.append("title", title);
     formData.append("content", content);
-    formData.append("visible_to", JSON.stringify(visibleTo));
+    formData.append("visible_to", JSON.stringify(visibleTo)); // Ensure it's valid JSON
 
+    // Validate and append files
     Array.from(selectedFiles).forEach((file) => {
+      if (
+        !file.type.startsWith("image/") &&
+        !file.type.startsWith("application/pdf")
+      ) {
+        alert(
+          `Invalid file type: ${file.name}. Only images and PDFs are allowed.`
+        );
+        setLoading(false);
+        return;
+      }
+
+      if (file.size > 10 * 1024 * 1024) {
+        // Limit file size to 10MB
+        alert(`File is too large: ${file.name}. Maximum allowed size is 10MB.`);
+        setLoading(false);
+        return;
+      }
+
       formData.append("files[]", file);
     });
 
     try {
+      // Send request to backend to upload files and save data
       const response = await fetch(
         "http://localhost/digilegacy-backend/upload_file.php",
         {
@@ -66,21 +128,26 @@ const Modal = ({ onClose, boxId, uploadedBy, onUpdate }) => {
       );
 
       if (!response.ok) {
-        throw new Error("File upload failed");
+        throw new Error("File upload failed. Please try again.");
       }
 
       const result = await response.json();
       console.log("Upload result:", result);
-      if (result.status === "success") {
-        alert("Files uploaded successfully");
 
-        if (onUpdate) onUpdate(); // ✅ Call parent update callback after upload
+      if (result.status === "success") {
+        alert("Files uploaded successfully!");
+
+        // Optionally call parent update function after success
+        if (onUpdate) onUpdate(); // Notify parent of successful upload
+
+        // Close the modal or perform other success actions
         onClose();
       } else {
-        alert("Upload failed");
+        // Provide better error feedback
+        alert(`Upload failed: ${result.message || "Unknown error."}`);
       }
     } catch (error) {
-      console.error("❌ Upload error:", error); // Logs full error object to console
+      console.error("❌ Upload error:", error);
       alert(`Error: ${error.message}`);
     }
   };
@@ -137,6 +204,29 @@ const Modal = ({ onClose, boxId, uploadedBy, onUpdate }) => {
           onChange={handleFileChange}
         />
 
+        <div className="existing-files-section">
+          <p>Existing Files:</p>
+          <ul className="uploaded-files-list">
+            {files.map((file, idx) => (
+              <li key={idx}>
+                <a
+                  href={`http://localhost/digilegacy-backend/${file.file_path}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {file.file_name}
+                </a>
+                <button
+                  onClick={() => handleFileDelete(file.file_path)}
+                  className="delete-file-btn"
+                >
+                  ❌
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+
         <div className="modal-buttons">
           <button onClick={onClose}>Cancel</button>
           <button onClick={handleSubmit}>Save</button>
@@ -175,22 +265,6 @@ const FileBox = ({ id, onRemove, onUpdate }) => {
       <button onClick={() => onRemove?.(id)} aria-label="Remove box">
         Remove
       </button>
-
-      {boxDetails && boxDetails.files && boxDetails.files.length > 0 && (
-        <ul>
-          {boxDetails.files.map((file, idx) => (
-            <li key={idx}>
-              <a
-                href={`http://localhost/digilegacy-backend/${file.file_path}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {file.file_name}
-              </a>
-            </li>
-          ))}
-        </ul>
-      )}
 
       {isModalOpen && (
         <Modal
@@ -254,20 +328,37 @@ const ReusableFileBoxContainer = ({ containerTitle = "File Boxes" }) => {
 
   const addBox = async () => {
     const newBox = {
-      id: `box_${Date.now()}`,
       title: "",
       content: "",
       visible_to: [],
       files: [],
     };
-    setBoxes([...boxes, newBox]);
 
-    // Optionally persist new empty box in DB
-    await fetch("http://localhost/digilegacy-backend/create_box.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ box_id: newId, user_id: userId }),
-    });
+    try {
+      const response = await fetch(
+        "http://localhost/digilegacy-backend/create_box.php",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id: userId }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.status === "success") {
+        const newBoxId = data.box_id; // Ensure box_id is returned from the backend
+        setBoxes((prevBoxes) => [
+          ...prevBoxes,
+          { id: newBoxId, title: "", content: "", visible_to: [], files: [] },
+        ]);
+      } else {
+        alert(`Failed to add box: ${data.message || "Unknown error"}`);
+      }
+    } catch (error) {
+      console.error("Error creating new box:", error);
+      alert("An error occurred while adding a new box.");
+    }
   };
 
   const removeBox = async (id) => {

@@ -28,6 +28,9 @@ const Login = () => {
       if (data.success && data.user) {
         // Now pass both user data and userType to the login function
         login(data.user, data.userType);
+        // Now you can access the personal_code
+        const personalCode = data.user.personal_code;
+        console.log("User's Personal Code: ", personalCode);
         // Redirect based on userType
         if (data.userType === "user") {
           navigate("/");

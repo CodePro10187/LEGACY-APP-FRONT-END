@@ -138,3 +138,12 @@
   font-size: 20px;
   cursor: pointer;
 }
+
+.delete-file-btn {
+  margin-left: 10px;
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-size: 14px;
+}
