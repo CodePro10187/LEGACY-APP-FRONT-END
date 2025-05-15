@@ -147,3 +147,12 @@
   cursor: pointer;
   font-size: 14px;
 }
+
+.download-file-btn {
+  margin-left: 10px;
+  background: none;
+  border: none;
+  color: green;
+  cursor: pointer;
+  font-size: 14px;
+}

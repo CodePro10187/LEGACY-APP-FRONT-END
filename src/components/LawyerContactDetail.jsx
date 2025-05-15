@@ -1,29 +1,25 @@
-import React, { useState } from "react";
-import axios from "axios"; // Added missing import
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "./LawyerContactDetail.css";
 
 const LawyerContactDetail = ({ lawyer, onBack, isPremiumUser }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [details, setDetails] = useState(null);
   const [chatEnabled, setChatEnabled] = useState(false);
 
-  const handleBooking = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost/lawyer-backend/book_appointment.php",
-        {
-          lawyerId: lawyer.id,
-          date: selectedDate.toISOString().split("T")[0], // Format the date as 'YYYY-MM-DD'
-        }
-      );
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost/digilegacy-backend/get_lawyer_details.php?lawyer_id=${lawyer.id}`
+        );
+        setDetails(response.data);
+      } catch (error) {
+        console.error("Error fetching lawyer details:", error);
+      }
+    };
 
-      alert(response.data.message);
-    } catch (error) {
-      console.error("Error booking appointment:", error);
-      alert("There was an error booking your appointment.");
-    }
-  };
+    fetchDetails();
+  }, [lawyer.id]);
 
   const handleChatToggle = () => {
     if (isPremiumUser) {
@@ -33,34 +29,60 @@ const LawyerContactDetail = ({ lawyer, onBack, isPremiumUser }) => {
     }
   };
 
+  if (!details) return <p>Loading lawyer details...</p>;
+
+  const { lawyer: lawyerData, schedule, appointments } = details;
+
   return (
     <div className="contact-detail-container">
       <button className="back-button" onClick={onBack}>
         ← Back
       </button>
       <div className="lawyer-detail-card">
-        <img src={lawyer.profile_picture_url} alt={lawyer.name} />
+        <img src={lawyerData.profile_picture_url} alt={lawyerData.name} />
         <div className="lawyer-info">
-          <h2>{lawyer.name}</h2>
-          <p>{lawyer.bio}</p>
-          <Calendar onChange={setSelectedDate} value={selectedDate} />
-          <div className="action-buttons">
-            <button onClick={handleBooking}>Make Appointment</button>
-            <button onClick={handleChatToggle}>
-              {isPremiumUser ? "Chat" : "Upgrade to Chat"}
-            </button>
-          </div>
+          <h2>{lawyerData.name}</h2>
+          <p>{lawyerData.bio}</p>
+          <p>Email: {lawyerData.email || "N/A"}</p>
+          <p>Phone: {lawyerData.mobile_number || "N/A"}</p>
+
+          <h3>Available Schedule</h3>
+          {schedule.length > 0 ? (
+            <ul>
+              {schedule.map((slot) => (
+                <li key={slot.schedule_id}>
+                  {slot.date} | {slot.starting_time} - {slot.ending_time}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No available schedule found.</p>
+          )}
+
+          <h3>Appointments</h3>
+          {appointments.length > 0 ? (
+            <ul>
+              {appointments.map((appt) => (
+                <li key={appt.appointment_id}>
+                  {appt.date} | {appt.starting_time}-{appt.ending_time} |
+                  Status: {appt.status}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No appointments found.</p>
+          )}
+
+          <button onClick={handleChatToggle}>
+            {isPremiumUser ? "Chat" : "Upgrade to Chat"}
+          </button>
+
           {chatEnabled && (
             <div className="chat-box">
-              <p>Chatting with {lawyer.name}...</p>
-              {/* Embed actual chat widget/component here */}
+              <p>Chatting with {lawyerData.name}...</p>
+              {/* Chat component goes here */}
             </div>
           )}
-          <div className="other-contact">
-            <h4>Other Contact Methods</h4>
-            <p>Email: {lawyer.email || "not provided"}</p>
-            <p>Phone: {lawyer.phone || "not provided"}</p>
-          </div>
         </div>
       </div>
     </div>

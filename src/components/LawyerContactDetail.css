@@ -52,3 +52,20 @@
 .other-contact {
   margin-top: 1.5rem;
 }
+
+.lawyer-detail-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.lawyer-detail-card li {
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.chat-box {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px dashed #333;
+  background: #f9f9f9;
+}

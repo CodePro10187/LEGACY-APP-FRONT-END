@@ -9,7 +9,7 @@ const LawyerList = ({ isPremiumUser }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost/lawyer-backend/get_lawyers.php")
+      .get("http://localhost/digilegacy-backend/get_lawyers.php")
       .then((response) => {
         console.log("Full response:", response);
         console.log("Response data:", response.data);
@@ -35,10 +35,24 @@ const LawyerList = ({ isPremiumUser }) => {
       <h2>Our Lawyers</h2>
       <div className="lawyer-cards">
         {lawyers.map((lawyer) => (
-          <div key={lawyer.id} className="lawyer-card">
+          <div
+            key={lawyer.id}
+            className={`lawyer-card ${
+              lawyer.active_status === "1" ? "active" : "inactive"
+            }`}
+          >
             <img src={lawyer.profile_picture_url} alt={lawyer.name} />
             <h3>{lawyer.name}</h3>
             <p>{lawyer.bio}</p>
+            <p
+              className={`status ${
+                lawyer.active_status === "1"
+                  ? "status-active"
+                  : "status-inactive"
+              }`}
+            >
+              {lawyer.active_status === "1" ? "Active" : "Inactive"}
+            </p>
             <button onClick={() => setSelectedLawyer(lawyer)}>Contact</button>
           </div>
         ))}

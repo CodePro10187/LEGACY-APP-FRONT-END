@@ -240,6 +240,14 @@ const Modal = ({ onClose, boxId, uploadedBy, onUpdate }) => {
                 >
                   {file.file_name}
                 </a>
+                <a
+                  href={`http://localhost/digilegacy-backend/${file.file_path}`}
+                  download={file.file_name}
+                  className="download-file-btn"
+                  title="Download file"
+                >
+                  ⬇️
+                </a>
                 <button
                   onClick={() => handleFileDelete(file.file_path)}
                   className="delete-file-btn"

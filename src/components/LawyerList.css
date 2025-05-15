@@ -43,3 +43,29 @@
   border-radius: 5px;
   cursor: pointer;
 }
+.lawyer-card {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  position: relative;
+  background-color: #f9f9f9;
+}
+
+.lawyer-card.inactive {
+  opacity: 0.6;
+  background-color: #f0f0f0;
+}
+
+.status {
+  font-size: 0.9em;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.status-active {
+  color: green;
+}
+
+.status-inactive {
+  color: red;
+}
