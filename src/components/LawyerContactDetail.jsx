@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./LawyerContactDetail.css";
+import ChatApp from "./ChatApp";
 
 const LawyerContactDetail = ({ lawyer, onBack, isPremiumUser }) => {
   const [details, setDetails] = useState(null);
@@ -73,16 +74,10 @@ const LawyerContactDetail = ({ lawyer, onBack, isPremiumUser }) => {
             <p>No appointments found.</p>
           )}
 
-          <button onClick={handleChatToggle}>
-            {isPremiumUser ? "Chat" : "Upgrade to Chat"}
-          </button>
-
-          {chatEnabled && (
-            <div className="chat-box">
-              <p>Chatting with {lawyerData.name}...</p>
-              {/* Chat component goes here */}
-            </div>
-          )}
+          <h3>Chat with {lawyerData.name}</h3>
+          <div className="chat-box">
+            <ChatApp lawyerId={lawyerData.lawyer_id} />
+          </div>
         </div>
       </div>
     </div>

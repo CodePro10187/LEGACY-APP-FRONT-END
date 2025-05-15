@@ -1,27 +1,53 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { useUser } from "../context/UserContext";
 import "./ChatApp.css";
 
-const API_URL = "http://localhost/lawyer-backend/chat_backend.php";
+const API_URL = "http://localhost/digilegacy-backend/chat_backend.php";
+const FILE_DELETE_URL =
+  "http://localhost/digilegacy-backend/delete_chat_file.php";
 
-const ChatApp = () => {
+const ChatApp = ({ lawyerId }) => {
+  const { user } = useUser();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [showDocuments, setShowDocuments] = useState(false);
   const fileInputRef = useRef(null);
 
+  const userId = user?.user_id;
+
   useEffect(() => {
-    fetchMessages();
-  }, []);
+    if (userId && lawyerId) {
+      fetchMessages();
+    }
+  }, [userId, lawyerId]);
 
   const fetchMessages = async () => {
-    const res = await axios.get(API_URL);
-    setMessages(res.data);
+    try {
+      const res = await axios.get(API_URL, {
+        params: {
+          from: userId,
+          to: lawyerId,
+        },
+      });
+
+      if (Array.isArray(res.data)) {
+        setMessages(res.data);
+      } else {
+        console.error("Invalid response from server:", res.data);
+        setMessages([]); // Fallback to empty array to prevent filter crash
+      }
+    } catch (err) {
+      console.error("Error fetching messages:", err);
+      setMessages([]); // Prevents app from crashing
+    }
   };
 
   const sendMessage = async () => {
     if (!input.trim()) return;
     await axios.post(API_URL, {
+      from: userId,
+      to: lawyerId,
       content: input,
       type: "text",
     });
@@ -33,24 +59,41 @@ const ChatApp = () => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Simulate upload path
     const formData = new FormData();
     formData.append("file", file);
 
-    const uploadResponse = await fetch("upload.php", {
-      method: "POST",
-      body: formData,
-    });
+    const uploadResponse = await fetch(
+      "http://localhost/digilegacy-backend/upload.php",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
     const result = await uploadResponse.json();
     if (result.success) {
       await axios.post(API_URL, {
+        user_id: userId,
+        lawyer_id: lawyerId,
         content: file.name,
         type: "file",
         file_path: result.path,
       });
       fetchMessages();
     }
+  };
+
+  const handleDeleteFile = async (filePath) => {
+    const confirmDelete = window.confirm("Delete this file?");
+    if (!confirmDelete) return;
+
+    await axios.post(FILE_DELETE_URL, {
+      file_path: filePath,
+      user_id: userId,
+      lawyer_id: lawyerId,
+    });
+
+    fetchMessages();
   };
 
   const handleSendFileClick = () => {
@@ -68,9 +111,19 @@ const ChatApp = () => {
             {msg.type === "text" ? (
               msg.content
             ) : (
-              <a href={msg.file_path} target="_blank" rel="noreferrer">
-                📎 {msg.content}
-              </a>
+              <div>
+                <a
+                  href={msg.file_path}
+                  target="_blank"
+                  rel="noreferrer"
+                  download
+                >
+                  📎 {msg.content}
+                </a>
+                <button onClick={() => handleDeleteFile(msg.file_path)}>
+                  🗑️
+                </button>
+              </div>
             )}
           </div>
         ))}
